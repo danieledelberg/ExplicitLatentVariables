@@ -1,0 +1,31 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda deactivate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+/gpfs/loomis/project/lederman/dge5/conda_envs/cryodrgn_rotations/lib/python3.7/site-packages/cryodrgn-1.0.0b0-py3.7.egg/cryodrgn/commands/train_vae.py:131: UserWarning: The .grad attribute of a Tensor that is not a leaf Tensor is being accessed. Its .grad attribute won't be populated during autograd.backward(). If you indeed want the gradient for a non-leaf Tensor, use .retain_grad() on the non-leaf Tensor. If you access the non-leaf Tensor by mistake, make sure you access the leaf Tensor instead. See github.com/pytorch/pytorch/pull/30531 for more informations.
+  zmugen = z_mu.grad.data.deepcopy()
+Traceback (most recent call last):
+  File "/gpfs/loomis/project/lederman/dge5/conda_envs/cryodrgn_rotations/bin/cryodrgn", line 33, in <module>
+    sys.exit(load_entry_point('cryodrgn==1.0.0b0', 'console_scripts', 'cryodrgn')())
+  File "/gpfs/loomis/project/lederman/dge5/conda_envs/cryodrgn_rotations/lib/python3.7/site-packages/cryodrgn-1.0.0b0-py3.7.egg/cryodrgn/__main__.py", line 58, in main
+    args.func(args)
+  File "/gpfs/loomis/project/lederman/dge5/conda_envs/cryodrgn_rotations/lib/python3.7/site-packages/cryodrgn-1.0.0b0-py3.7.egg/cryodrgn/commands/train_vae.py", line 552, in main
+    loss, gen_loss, kld = train_batch(model, lattice, y, yt, zmu, zvar, rot, tran, optim, z_optimizer, beta, args.beta_control, tilt, ctf_params=ctf_param, yr=yr, use_amp=args.amp, scaler=scaler)
+  File "/gpfs/loomis/project/lederman/dge5/conda_envs/cryodrgn_rotations/lib/python3.7/site-packages/cryodrgn-1.0.0b0-py3.7.egg/cryodrgn/commands/train_vae.py", line 131, in train_batch
+    zmugen = z_mu.grad.data.deepcopy()
+AttributeError: 'NoneType' object has no attribute 'data'

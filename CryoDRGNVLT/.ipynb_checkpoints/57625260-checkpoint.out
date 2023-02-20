@@ -1,0 +1,118 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda deactivate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+running install
+running bdist_egg
+running egg_info
+writing cryodrgn.egg-info/PKG-INFO
+writing dependency_links to cryodrgn.egg-info/dependency_links.txt
+writing entry points to cryodrgn.egg-info/entry_points.txt
+writing requirements to cryodrgn.egg-info/requires.txt
+writing top-level names to cryodrgn.egg-info/top_level.txt
+reading manifest file 'cryodrgn.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+adding license file 'LICENSE.txt'
+writing manifest file 'cryodrgn.egg-info/SOURCES.txt'
+installing library code to build/bdist.linux-x86_64/egg
+running install_lib
+running build_py
+copying build/lib/cryodrgn/pose.py -> build/bdist.linux-x86_64/egg/cryodrgn
+copying build/lib/cryodrgn/analysis.py -> build/bdist.linux-x86_64/egg/cryodrgn
+copying build/lib/cryodrgn/models.py -> build/bdist.linux-x86_64/egg/cryodrgn
+copying build/lib/cryodrgn/lie_tools.py -> build/bdist.linux-x86_64/egg/cryodrgn
+creating build/bdist.linux-x86_64/egg/cryodrgn/templates
+copying build/lib/cryodrgn/templates/cryoDRGN_viz_template.ipynb -> build/bdist.linux-x86_64/egg/cryodrgn/templates
+copying build/lib/cryodrgn/templates/cryoDRGN_filtering_template.ipynb -> build/bdist.linux-x86_64/egg/cryodrgn/templates
+copying build/lib/cryodrgn/__init__.py -> build/bdist.linux-x86_64/egg/cryodrgn
+copying build/lib/cryodrgn/starfile.py -> build/bdist.linux-x86_64/egg/cryodrgn
+copying build/lib/cryodrgn/z_train.py -> build/bdist.linux-x86_64/egg/cryodrgn
+copying build/lib/cryodrgn/utils.py -> build/bdist.linux-x86_64/egg/cryodrgn
+copying build/lib/cryodrgn/beta_schedule.py -> build/bdist.linux-x86_64/egg/cryodrgn
+copying build/lib/cryodrgn/commands/eval_images.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/downsample.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/graph_traversal.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/analyze_landscape.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/analyze.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/parse_pose_star.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/parse_pose_csparc.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/__init__.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/backproject_voxel.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/z_train.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/parse_ctf_star.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/train_vae.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/parse_ctf_csparc.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/train_nn.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/preprocess.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/pc_traversal.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/view_config.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/write_starfile.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/commands/eval_vol.py -> build/bdist.linux-x86_64/egg/cryodrgn/commands
+copying build/lib/cryodrgn/shift_grid.py -> build/bdist.linux-x86_64/egg/cryodrgn
+copying build/lib/cryodrgn/so3_grid.py -> build/bdist.linux-x86_64/egg/cryodrgn
+copying build/lib/cryodrgn/__main__.py -> build/bdist.linux-x86_64/egg/cryodrgn
+copying build/lib/cryodrgn/losses.py -> build/bdist.linux-x86_64/egg/cryodrgn
+copying build/lib/cryodrgn/config.py -> build/bdist.linux-x86_64/egg/cryodrgn
+copying build/lib/cryodrgn/shift_grid3.py -> build/bdist.linux-x86_64/egg/cryodrgn
+copying build/lib/cryodrgn/mrc.py -> build/bdist.linux-x86_64/egg/cryodrgn
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/models.py to models.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/lie_tools.py to lie_tools.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/__init__.py to __init__.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/starfile.py to starfile.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/utils.py to utils.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/beta_schedule.py to beta_schedule.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/eval_images.py to eval_images.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/downsample.py to downsample.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/graph_traversal.py to graph_traversal.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/analyze_landscape.py to analyze_landscape.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/analyze.py to analyze.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/parse_pose_star.py to parse_pose_star.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/parse_pose_csparc.py to parse_pose_csparc.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/__init__.py to __init__.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/backproject_voxel.py to backproject_voxel.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/z_train.py to z_train.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/parse_ctf_star.py to parse_ctf_star.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/train_vae.py to train_vae.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/parse_ctf_csparc.py to parse_ctf_csparc.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/train_nn.py to train_nn.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/preprocess.py to preprocess.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/pc_traversal.py to pc_traversal.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/view_config.py to view_config.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/write_starfile.py to write_starfile.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/commands/eval_vol.py to eval_vol.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/shift_grid.py to shift_grid.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/so3_grid.py to so3_grid.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/__main__.py to __main__.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/losses.py to losses.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/config.py to config.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/shift_grid3.py to shift_grid3.cpython-37.pyc
+byte-compiling build/bdist.linux-x86_64/egg/cryodrgn/mrc.py to mrc.cpython-37.pyc
+/gpfs/loomis/project/lederman/dge5/conda_envs/cryodrgn_rotations/lib/python3.7/site-packages/setuptools/dist.py:487: UserWarning: Normalizing '1.0.0-beta' to '1.0.0b0'
+  warnings.warn(tmpl.format(**locals()))
+  File "build/bdist.linux-x86_64/egg/cryodrgn/commands/z_train.py", line 15
+    def save(self, out_pkl)
+                          ^
+SyntaxError: invalid syntax
+
+error: file '/gpfs/gibbs/pi/lederman/dge5/CRYODRGN_Z_EXPLICIT/cryodrgn/build/bdist.linux-x86_64/egg/cryodrgn/ctf.py' does not exist
+Traceback (most recent call last):
+  File "/gpfs/loomis/project/lederman/dge5/conda_envs/cryodrgn_rotations/bin/cryodrgn", line 33, in <module>
+    sys.exit(load_entry_point('cryodrgn==1.0.0b0', 'console_scripts', 'cryodrgn')())
+  File "/gpfs/loomis/project/lederman/dge5/conda_envs/cryodrgn_rotations/lib/python3.7/site-packages/cryodrgn-1.0.0b0-py3.7.egg/cryodrgn/__main__.py", line 9, in main
+  File "/gpfs/loomis/project/lederman/dge5/conda_envs/cryodrgn_rotations/lib/python3.7/site-packages/cryodrgn-1.0.0b0-py3.7.egg/cryodrgn/commands/downsample.py", line 12, in <module>
+ImportError: cannot import name 'utils' from 'cryodrgn' (/gpfs/loomis/project/lederman/dge5/conda_envs/cryodrgn_rotations/lib/python3.7/site-packages/cryodrgn-1.0.0b0-py3.7.egg/cryodrgn/__init__.py)
