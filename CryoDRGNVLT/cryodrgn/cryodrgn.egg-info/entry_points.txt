@@ -1,0 +1,3 @@
+[console_scripts]
+cryodrgn = cryodrgn.__main__:main
+
