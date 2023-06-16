@@ -96,11 +96,12 @@ def add_args(parser):
     group.add_argument('--activation', choices=('relu','leaky_relu'), default='relu', help='Activation (default: %(default)s)')
     
     
-    group = parser.add_argument_group('Daniel Custom Parameters')
+    group = parser.add_argument_group('Latent Table Custom Parameters')
     group.add_argument('--zlr', type=float, default=0.001, required=True, help='Learning Rate for the Optimizer for Z (default: %(default))')
     group.add_argument('--zinit', choices=('random', 'pretrained', 'zero', 'permuted', 'randomclusters'), required=True, help='How the Z Values should be initialized: random, pretrained, or zero')
     group.add_argument('--randomvar', type=float, default=None, required=False, help='Optional Variance for Random Initialization (default: %(default))')
-    group.add_argument('--loadz', type=str, default=None, required=False, help='Required z values to initialize training from a checkpoint')
+    group.add_argument('--loadz', type=str, default=None, required=True,
+                       help='Required z values to initialize training from a checkpoint')
 
     return parser
 
@@ -130,25 +131,7 @@ def train_batch(model, lattice, y, yt, zmu, zvar, rot, trans, optim, zoptim, bet
                 scaled_loss.backward()
             optim.step()
     else:
-        #z_mu.retain_grad()
-        #gen_loss.backward(retain_graph=True)
-        #zmugen = deepcopy(z_mu.grad.data)
-        #print('zmu_gen grad')
-        #print(zmugen)
         loss.backward()
-        #zmutotal = deepcopy(z_mu.grad.data)
-        #print('zmutotal (+1x gen grad + 0x kld grad)')
-        #print(zmutotal)
-        #print('calculated kld grad')
-        #zmukld = zmutotal - (2 * zmugen)
-        #print(zmukld)
-        #print('grad norms:')
-        #print('Gen Grad Norm: ', torch.norm(zmugen))
-        #print('KLD Grad Norm: ', torch.norm(zmukld))
-        #print('Grad: ', zmutotal.cpu()[0])
-        #print('Grad: ', zmutotal - zmugen)
-        #print('Total Grad Norm: ', torch.norm(zmutotal))
-        #print('Total Grad Norm: ', torch.norm(zmutotal - zmugen))
         optim.step()
         zoptim.step()
     return loss.item(), gen_loss.item(), kld.item()
@@ -188,14 +171,11 @@ def run_batch(model, lattice, y, yt, zmu, zvar, rot, tilt=None, ctf_params=None,
     #z_mu, z_logvar = _unparallelize(model).encode(*input_)
     z_mu, z_logvar = zmu, zvar
     ##############################################
-    ## STOCHASTICITY - need to re-setup.py install to use this
+    ## STOCHASTICITY
     std = torch.exp(.5 * z_logvar)
     eps = torch.randn_like(std)
     z = z_mu + eps * std
-    ## NOT STOCHASTIC
-    # z = z_mu + torch.exp(.5*z_logvar)
-    # Taking out the randomness for now (a true lookup table)
-    #z = _unparallelize(model).reparameterize(z_mu, z_logvar)
+
 
     # decode 
     mask = lattice.get_circular_mask(D//2) # restrict to circular mask
@@ -217,29 +197,10 @@ def loss_function(z_mu, z_logvar, y, yt, y_recon, mask, beta, y_recon_tilt=None,
     gen_loss = F.mse_loss(y_recon, y.view(B,-1)[:, mask])
     if use_tilt:
         gen_loss = .5*gen_loss + .5*F.mse_loss(y_recon_tilt, yt.view(B,-1)[:,mask])
-    # latent loss
-    #print('genloss')
-    #print(gen_loss)
+
     kld = torch.mean(-0.5 * torch.sum(1 + z_logvar - z_mu.pow(2) - z_logvar.exp(), dim=1), dim=0)
-    #print('kld')
-    #print(kld)
-    # total loss
     if beta_control is None:
-        #print('calc loss')
-        #print('beta ', beta)
-        
-        #print('mask ', mask.sum())
-        #print('kld term')
-        #print(beta * kld/mask.sum().float())
-        print('beta')
-        print(beta)
-        print('kld')
-        print(kld)
-        print('weight')
-        print(mask.sum().float())
         loss = gen_loss + beta*kld/mask.sum().float()
-        #print('loss')
-        #print(loss)
     else:
         loss = gen_loss + args.beta_control*(beta-kld)**2/mask.sum().float()
     return loss, gen_loss, kld
@@ -412,9 +373,6 @@ def main(args):
     do_pose_sgd = args.do_pose_sgd
     posetracker = PoseTracker.load(args.poses, Nimg, D, 's2s2' if do_pose_sgd else None, ind, device=device)
     pose_optimizer = torch.optim.SparseAdam(list(posetracker.parameters()), lr=args.pose_lr) if do_pose_sgd else None
-    #print(posetracker)
-    #print(posetracker.parameters())
-    #print(list(posetracker.parameters()))
     # load ctf
     if args.ctf is not None:
         if args.use_real:
@@ -559,7 +517,7 @@ def main(args):
     ztracker = ZTracker(zmu_input, zvar_input).to(device)
     
     zlearningrate = args.zlr
-    # zlearningrate = 0.0001
+
     print('Learning Rate for Z Optimizer: ', zlearningrate)
     if zlearningrate == 0:
         print('Optimizer Type: SGD')
@@ -573,23 +531,11 @@ def main(args):
     print('Using KLD')
     ###########################################
     
-    first_value = zmu_input[0].cpu().detach().numpy()
     # training loop
-    # DANIEL EDIT - SET SHUFFLE TO FALSE FOR TESTINGT
-    #print('#############################################################################################')
-    #print('WARNING: SHUFFLE SET TO FALSE')
+
     data_generator = DataLoader(data, batch_size=args.batch_size, shuffle=True)
     num_epochs = args.num_epochs
     for epoch in range(start_epoch, num_epochs):
-        print('Previous Value:')
-        print(first_value)
-        new_value = ztracker.get_zval(torch.tensor([0]).to(device))[0].cpu().detach().numpy()
-        print('Change in Value:')
-        print(new_value - first_value)
-        print('New Value:')
-        print(new_value)
-        first_value = new_value
-        #print(ztracker.get_zval(torch.tensor([0], dtype=torch.int32).to(device)))
         t2 = dt.now()
         gen_loss_accum = 0
         loss_accum = 0
@@ -616,11 +562,7 @@ def main(args):
             zmu, zvar = ztracker.get_zval(ind)
             
             ctf_param = ctf_params[ind] if ctf_params is not None else None
-            # Daniel - Edit to train batch(...y, yt, [zmu, zvar], rot...), also include optimizer
             loss, gen_loss, kld = train_batch(model, lattice, y, yt, zmu, zvar, rot, tran, optim, z_optimizer, beta, args.beta_control, tilt, ctf_params=ctf_param, yr=yr, use_amp=args.amp, scaler=scaler)
-            
-            #z_optimizer.step()
-
             if do_pose_sgd and epoch >= args.pretrain:
                 pose_optimizer.step()
             # logging

@@ -89,16 +89,13 @@ def add_args(parser):
     group.add_argument('--activation', choices=('relu','leaky_relu'), default='relu', help='Activation (default: %(default)s)')
     return parser
 
-# DANIEL EDIT FOR EVIL TWIN - this doesn't need to be changed if edit the training commands
 def train_batch(model, lattice, y, x, yt, rot, trans, optim, beta, beta_control=None, tilt=None, ctf_params=None, yr=None, use_amp=False):
-#def train_batch(model, lattice, y, yt, rot, trans, optim, beta, beta_control=None, tilt=None, ctf_params=None, yr=None, use_amp=False):
     optim.zero_grad()
     model.train()
     if trans is not None:
         y, yt = preprocess_input(y, yt, lattice, trans)
     # EVIL INSERTION
-    #z_mu, z_logvar, z, y_recon, y_recon_tilt, mask = run_batch(model, lattice, x, yt, rot, tilt, ctf_params, yr)
-    z_mu, z_logvar, z, y_recon, y_recon_tilt, mask = run_batch(model, lattice, y, yt, rot, tilt, ctf_params, yr)
+    z_mu, z_logvar, z, y_recon, y_recon_tilt, mask = run_batch(model, lattice, x, yt, rot, tilt, ctf_params, yr)
     loss, gen_loss, kld = loss_function(z_mu, z_logvar, y, yt, y_recon, mask, beta, y_recon_tilt, beta_control)
     if use_amp:
         with amp.scale_loss(loss, optim) as scaled_loss:
@@ -137,9 +134,6 @@ def run_batch(model, lattice, y, yt, rot, tilt=None, ctf_params=None, yr=None):
         input_ = (y,yt) if yt is not None else (y,)
         if use_ctf: input_ = (x*c.sign() for x in input_) # phase flip by the ctf
     z_mu, z_logvar = _unparallelize(model).encode(*input_)
-    # Here is elimination of encoder
-    # TODO: pass index so z_index can be indexed and ignore the encode step
-    # z_mu, z_logvar = z_index[ind]
     z = _unparallelize(model).reparameterize(z_mu, z_logvar)
 
     # decode 
@@ -313,10 +307,7 @@ def main(args):
             data = dataset.LazyMRCData(args.particles, norm=args.norm, invert_data=args.invert_data, ind=ind, keepreal=args.use_real, window=args.window, datadir=args.datadir, relion31=args.relion31)
         else:
             data = dataset.MRCData(args.particles, norm=args.norm, invert_data=args.invert_data, ind=ind, keepreal=args.use_real, window=args.window, datadir=args.datadir, relion31=args.relion31)
-            # ADD EVIL DATA
-            print('no evil data')
-            #print('importing evil data')
-            #data_evil = dataset.MRCData('justnoise.mrcs', norm=args.norm, invert_data=args.invert_data, ind=ind, keepreal=args.use_real, window=args.window, datadir=args.datadir, relion31=args.relion31)
+            data_evil = dataset.MRCData('justnoise.mrcs', norm=args.norm, invert_data=args.invert_data, ind=ind, keepreal=args.use_real, window=args.window, datadir=args.datadir, relion31=args.relion31)
         tilt = None
     else:
         assert args.encode_mode == 'tilt'
@@ -425,12 +416,12 @@ def main(args):
             y = minibatch[0].to(device)
             yt = minibatch[1].to(device) if tilt is not None else None
             # UNCOMMENT BELOW FOR NO EVIL DATA
-            x = y 
+            # x = y
             # UNCOMMENT BELOW FOR EVIL DATA
             # EVIL DATA EDIT
-            # x = data_evil[ind_copy]
-            # x = torch.Tensor(x[0])
-            # x = x.to(device)
+            x = data_evil[ind_copy]
+            x = torch.Tensor(x[0])
+            x = x.to(device)
             
             B = len(ind)
             batch_it += B
@@ -465,13 +456,14 @@ def main(args):
             with torch.no_grad():
                 # DANIEL Z EVAL
                 #this is where you include the data you want to output as part of the test (rotated images)
-                
-                altered_images_path = "shifted.particles.mrcs"
-                print('Loaded altered images')
-                data2 = dataset.MRCData(altered_images_path, norm=args.norm, invert_data=args.invert_data, ind=None, keepreal=args.use_real, window=args.window, datadir=args.datadir, relion31=args.relion31)
+                #altered_images_path = "shifted.particles.mrcs"
+                #print('Loaded altered images')
+                #data2 = dataset.MRCData(altered_images_path,
+                # norm=args.norm, invert_data=args.invert_data, ind=None, keepreal=args.use_real, window=args.window, datadir=args.datadir, relion31=args.relion31)
                 # keep everything the same but instead use own data
-                my_zmu, my_zlogvar= eval_z(model, lattice, data2, args.batch_size, device, posetracker.trans, tilt is not None, ctf_params, args.use_real)
-                np.save(my_z, [my_zmu, my_zlogvar], allow_pickle=True)
+                #my_zmu, my_zlogvar= eval_z(model, lattice, data2,
+                # args.batch_size, device, posetracker.trans, tilt is not None, ctf_params, args.use_real)
+                # np.save(my_z, [my_zmu, my_zlogvar], allow_pickle=True)
                 # END INSERTION
                 #
                 z_mu, z_logvar = eval_z(model, lattice, data, args.batch_size, device, posetracker.trans, tilt is not None, ctf_params, args.use_real)

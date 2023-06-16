@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import numpy as np
 import pickle
 
 class ZTracker(nn.Module):
@@ -9,7 +8,6 @@ class ZTracker(nn.Module):
         self.zmu = zmu
         self.zvar = zvar
         # zvals shape: N x Zdim for each
-        
         
         zmu_embed = nn.Embedding(zmu.shape[0], zmu.shape[1], sparse=True)
         zmu_embed.weight.data.copy_(zmu)
